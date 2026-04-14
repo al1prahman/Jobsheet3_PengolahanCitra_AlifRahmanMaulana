@@ -6,11 +6,14 @@
 - Praktikum: Jobsheet 3 Pengolahan Citra
 
 ## Ringkasan Praktikum
-Notebook `Jobsheet_3_Pengolahan_Citra.ipynb` berisi 4 topik utama pengolahan citra:
+Notebook `Jobsheet_3_Pengolahan_Citra.ipynb` berisi 7 topik utama pengolahan citra:
 1. Transformasi negatif citra (grayscale dan berwarna)
 2. Histogram dan ekualisasi histogram (grayscale dan berwarna)
 3. Filter rata-rata (mean filter) pada citra grayscale dan berwarna
 4. Filter median untuk reduksi noise salt-and-pepper pada citra grayscale dan berwarna
+5. Transformasi gamma untuk pengaturan kecerahan/gelap citra
+6. Perbandingan contrast stretching dan histogram equalization
+7. Perbandingan performa mean filter vs median filter pada noise impuls
 
 ## Praktikum 1: Transformasi Negatif Citra
 ### Tujuan
@@ -101,10 +104,72 @@ Mengurangi noise impuls (salt-and-pepper) menggunakan median filter dengan struc
 ### Kesimpulan
 Median filter sangat efektif untuk noise salt-and-pepper karena mampu menghilangkan noise impuls tanpa mengaburkan tepi sekuat mean filter.
 
+## Praktikum 5: Eksperimen Transformasi Intensitas (Gamma)
+### Tujuan
+Menganalisis pengaruh nilai gamma terhadap intensitas citra grayscale menggunakan transformasi gamma:
+\[
+I_{out} = I_{in}^{\gamma}
+\]
+
+### Hasil Praktikum
+- Untuk `gamma = 2.0` pada citra `camera`, citra menjadi lebih gelap karena intensitas menengah-rendah ditekan.
+- Untuk `gamma = 0.5` pada citra `astronaut` (yang sudah diubah ke grayscale), citra menjadi lebih terang karena intensitas rendah dinaikkan.
+- Perubahan intensitas terjadi non-linear sehingga detail tertentu bisa lebih menonjol tergantung nilai gamma.
+
+### Output
+- Visualisasi 2x2:
+  - Camera asli
+  - Camera hasil gamma 2.0 (lebih gelap)
+  - Astronaut grayscale asli
+  - Astronaut hasil gamma 0.5 (lebih terang)
+
+### Kesimpulan
+Transformasi gamma efektif untuk kontrol kecerahan non-linear: `gamma > 1` cenderung menggelapkan citra, sedangkan `gamma < 1` cenderung mencerahkan citra.
+
+## Praktikum 6: Perbandingan Metode Peningkatan Kontras
+### Tujuan
+Membandingkan dua metode peningkatan kontras pada citra low contrast, yaitu contrast stretching dan histogram equalization.
+
+### Hasil Praktikum
+- **Contrast stretching** dengan rentang persentil 2-98 memperluas distribusi intensitas tanpa terlalu dipengaruhi outlier.
+- **Histogram equalization** meratakan histogram lebih agresif sehingga kontras global meningkat lebih kuat.
+- Kedua metode sama-sama meningkatkan keterbacaan detail, dengan karakter hasil visual yang berbeda.
+
+### Output
+- Visualisasi 3x2:
+  - Citra low contrast asli + histogram asli
+  - Hasil contrast stretching + histogram stretching
+  - Hasil histogram equalization + histogram equalization
+
+### Kesimpulan
+Contrast stretching cocok untuk peningkatan kontras yang lebih terkontrol, sementara histogram equalization cocok untuk peningkatan kontras global yang lebih kuat.
+
+## Praktikum 7: Perbandingan Filter Median vs Mean
+### Tujuan
+Mengevaluasi kinerja mean filter dan median filter pada citra yang diberi noise salt-and-pepper.
+
+### Hasil Praktikum
+- Mean filter (kernel 3x3) mampu mengurangi noise, tetapi menghasilkan blur dan masih menyisakan artefak noise impuls.
+- Median filter (disk radius 3) lebih efektif menghapus bintik salt-and-pepper sambil menjaga ketajaman tepi.
+- Secara visual, median filter memberikan kompromi terbaik antara denoising dan preservasi struktur.
+
+### Output
+- Visualisasi 1x4:
+  - Citra asli
+  - Citra noisy (salt-and-pepper)
+  - Hasil mean filter
+  - Hasil median filter
+
+### Kesimpulan
+Untuk noise salt-and-pepper, median filter lebih unggul daripada mean filter karena mampu mereduksi noise impuls tanpa mengaburkan tepi secara berlebihan.
+
 ## Kesimpulan Umum Jobsheet 3
 - Transformasi negatif mengubah representasi visual dengan inversi intensitas.
 - Histogram membantu analisis distribusi intensitas, sedangkan ekualisasi histogram meningkatkan kontras.
 - Mean filter cocok untuk smoothing sederhana namun mengurangi ketajaman.
 - Median filter lebih unggul untuk menangani noise salt-and-pepper dengan mempertahankan tepi lebih baik.
+- Transformasi gamma memberi kontrol pencahayaan non-linear yang fleksibel.
+- Contrast stretching dan histogram equalization sama-sama meningkatkan kontras, tetapi dengan karakter hasil yang berbeda.
+- Pada denoising noise impuls, median filter konsisten memberikan hasil paling baik secara visual.
 
 Dengan demikian, pemilihan metode pengolahan citra harus disesuaikan dengan tujuan: peningkatan kontras, smoothing, atau denoising berbasis jenis noise.
